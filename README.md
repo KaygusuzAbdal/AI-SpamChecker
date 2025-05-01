@@ -83,10 +83,10 @@ Python 3.9+ , scikit-learn (TF-IDF + Naive Bayes) , Google Gmail API , Pandas & 
 
 ## ✅ To-Do / Improvements
  
- - Add unit tests.
- - Build a GUI (Tkinter / PyQT).
- - Support other email providers (Outlook, Yahoo).
- - Add Docker support.
+ - Add unit tests
+ - Build a GUI (w\PyQT)
+ - Support other email providers (Outlook, Yahoo)
+ - Add Docker support
 
 ## 📄 License
 This project is licensed under the MIT License.
