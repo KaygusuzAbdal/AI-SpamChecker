@@ -37,20 +37,20 @@ AI-SpamChecker/
 
 ## ⚙️ Installation & Setup
 
-1️⃣ Clone the repository:
+1️⃣ **Clone the repository:**
 
 ```
 git clone https://github.com/KaygusuzAbdal/AI-SpamChecker.git
 cd AI-SpamChecker
 ```
 
-2️⃣ Install the required dependencies:
+2️⃣ **Install the required dependencies:**
 
 ```
 pip install -r requirements.txt
 ```
 
-3️⃣ Set up Gmail API credentials:
+3️⃣ **Set up Gmail API credentials:**
 
 In order for the project to work, you must set up Gmail API credentials. Follow the [Gmail API Quickstart Guide](https://developers.google.com/workspace/gmail/api/quickstart/python) to generate your OAuth 2.0 credentials.
 
@@ -66,7 +66,7 @@ Then place it under: `mail_connector/credentials/gmail.json`
 ⚠️ **Without this file, the project will NOT be able to access your Gmail inbox.**
 
 
-4️⃣ 📝 Run the project:
+4️⃣ 📝 **Run the project:**
 
 ```
 python spam-check.py
