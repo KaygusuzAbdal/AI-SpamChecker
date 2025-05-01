@@ -10,7 +10,9 @@ Although the file name may appear in the repository, the actual file is **empty 
 
 Once downloaded, place the file here:
 
-```datasets/enron-english-dataset.csv```
+```
+datasets/enron-english-dataset.csv
+```
 
 This ensures the spam detection model will work correctly with both English and Turkish datasets.
 
