@@ -6,27 +6,27 @@ from model.model_trainer.model_retrain import retrain_model_from_feedback
 import os
 import time
 
-CHECK_INTERVAL = 10 # Real-Time taraması: 10 saniye
+CHECK_INTERVAL = 10 # Real-time scan: Every 10 seconds
 
-# dataset oluşturma ve model eğitme fonksiyonu (eğer daha önce oluşturulmadıysa)
+# Function to create the dataset and train the model (if not already done)
 def initialize_and_train_model_if_needed(normalizer, trainer, datasets, master_dataset_path="datasets/master/dataset.csv", model_pkl_path="model/spam_model.pkl"):
-    model_exists = os.path.exists(model_pkl_path)  # modelin kaydedildiği yer
-    # Model yoksa sadece ilk kez çalıştır ve kaydet
+    model_exists = os.path.exists(model_pkl_path)  # Path where the model is saved
+    # If the model doesn't exist, train and save it for the first time
     if not model_exists:
-        print("[*] Model bulunamadı, eğitiliyor...")
-        # Dataset yoksa sadece ilk kez birleştir ve kaydet
+        print("[*] Model not found, starting training...")
+        # If the combined dataset doesn't exist, merge and save it
         if not os.path.exists(master_dataset_path):
             for ds in datasets:
                 normalizer.load_dataset(f"datasets/{ds[0]}", ds[1])
             normalizer.save_combined_dataset()
-            print("[+] Dataset oluşturuldu ve kaydedildi.")
+            print("[+] Dataset created and saved.")
 
         trainer.load_and_clean_dataset()
         trainer.train_model()
         trainer.save_model()
-        print("[+] Model başarıyla eğitildi ve kaydedildi.")
+        print("[+] Model successfully trained and saved.")
     else:
-        print("[*] Kayıtlı model bulundu, yükleniyor...")
+        print("[*] Existing model found, loading...")
         trainer.load_model()
 
 
@@ -39,26 +39,26 @@ def main():
 
     initialize_and_train_model_if_needed(normalizer, trainer, datasets)
 
-    print("[*] Real-time Spam Check Servisi Başlatılıyor...")
+    print("[*] Real-time Spam Check Service is starting...")
 
-    # ilk kez çalışıyorsa
+    # First run
     first_time = True
     while True:
         if first_time:
-            # okunmuş/okunmamış tüm mesajları getir
+            # Fetch all messages (read/unread)
             messages = connector.get_messages(unread=False)
-            print(f"[+] Tüm mesajlar kontrol edildi, toplam ({len(messages)} mesaj bulundu).\n")
+            print(f"[+] All messages checked, total found: ({len(messages)} messages).\n")
             first_time = False
         else:
-            # okunmamış ve etiketi olmayan mesajları getir
+            # Fetch unread messages without any label
             messages = connector.get_messages(unread=True, exclude_labels=["safe", "spam"])
-            print(f"[+] Yeni mesajlar kontrol ediliyor... ({len(messages)} yeni mesaj bulundu).\n")
-        # eğer veri döndüyse
+            print(f"[+] Checking for new messages... ({len(messages)} new messages found).\n")
+        # If messages are returned
         if messages != []:
             for msg in messages:
-                # mesaj detaylarını getir
+                # Get message details
                 details = connector.get_message_detail(msg['id'])
-                # Tahmin yap
+                # Make prediction
                 prediction, auth_summary, domain_match, reply_match = trainer.predict_message(details)
 
                 label = 'spam' if prediction else 'safe'
@@ -71,9 +71,9 @@ def main():
                 print(f"reply_match: {reply_match}")
                 print(f"Prediction: {label.upper()}\n")
                 
-                # SPF, DKIM, DMARC domain_match ve reply_match değerleri true dönerse, kullanıcıya sor:
+                # If SPF, DKIM, DMARC pass and domain_match + reply_match are true, ask the user for feedback
                 if prediction and all(val in auth_summary for val in ['spf:pass', 'dkim:pass', 'dmarc:pass']) and domain_match and reply_match:
-                    yanit = input("[?] Bu mail güvenli görünüyor. Sence gerçekten SPAM mı? (e/h): ").strip().lower()
+                    yanit = input("[?] This email looks safe. Do you think it's SPAM? (y/n): ").strip().lower()
                     if yanit == 'h':
                         label = 'safe'
                         normalizer.save_feedback_to_dataset({
@@ -86,13 +86,13 @@ def main():
                             'dmarc': 'pass',
                             'reply_match': reply_match
                         })
-                        print("[+] Kullanıcı geri bildirimi kaydedildi, model yeniden eğitiliyor...")
+                        print("[+] User feedback saved, retraining the model...")
                         retrain_model_from_feedback()
 
                 connector.add_message_label(msg['id'], label)
         print("\n") if first_time else time.sleep(CHECK_INTERVAL)
 
 
-# eğer spam-check.py dosyası DOĞRUDAN çalıştırılıyorsa bu fonksiyonu çalıştır
+# Run this function if spam-check.py is executed directly
 if __name__ == '__main__':
     main()
