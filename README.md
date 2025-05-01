@@ -13,14 +13,26 @@ AI SpamChecker is a Python-based project that automatically detects and labels s
 
 ```
 AI-SpamChecker/
-├── spam-check.py                # Main script
-├── datasets/                    # Contains datasets (English & Turkish)
-├── dataset_processor/           # Data normalization module
-├── model/                       # Model training & retraining
-├── mail_connector/              # Gmail API connector
-├── mail_analysis/               # Security checker (SPF/DKIM/DMARC)
-├── README.md                    # This file
-└── LICENSE
+├── spam-check.py                   # Main script to run the spam checker
+├── datasets/                       # Contains datasets and dataset README (English & Turkish)
+│   ├── enron-english-dataset.csv   # (Download required; see README.txt)
+│   ├── tr-spam-dataset.csv         # Turkish dataset
+│   └── README.txt                  # Dataset usage & download instructions
+├── dataset_processor/              # Data normalization module
+│   └── dataset_normalizer.py
+├── model/                          # Model training & retraining
+│   └── model_trainer/
+│       ├── train_model.py
+│       └── model_retrain.py
+├── mail_connector/                 # Gmail API connector
+│   ├── gmail_connector.py
+│   └── credentials/
+│       └── gmail.json              # Gmail API credentials (not included)
+├── mail_analysis/                  # Security checker (SPF/DKIM/DMARC)
+│   └── security_checker.py
+├── requirements.txt                # Python dependencies
+├── README.md                       # Project documentation
+└── LICENSE                         # License file
 ```
 
 ## ⚙️ Installation & Setup
