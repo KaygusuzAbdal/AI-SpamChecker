@@ -79,18 +79,14 @@ Whenever new feedback is available, the model automatically retrains to adapt an
 
 ## 🛠️ Tech Stack
 
-Python 3.9+
-scikit-learn (TF-IDF + Naive Bayes)
-Google Gmail API
-Pandas & CSV handling
-Regex-based email header analysis
+Python 3.9+ , scikit-learn (TF-IDF + Naive Bayes) , Google Gmail API , Pandas & CSV handling , Regex-based email header analysis
 
 ## ✅ To-Do / Improvements
  
- Add unit tests.
- Build a GUI (Tkinter / PyQT).
- Support other email providers (Outlook, Yahoo).
- Add Docker support.
+ - Add unit tests.
+ - Build a GUI (Tkinter / PyQT).
+ - Support other email providers (Outlook, Yahoo).
+ - Add Docker support.
 
 ## 📄 License
 This project is licensed under the MIT License.
