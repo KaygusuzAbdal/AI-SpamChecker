@@ -66,7 +66,7 @@ python spam-check.py
 
 The script loads your Gmail inbox and fetches new or unread messages.
 
-For each message:
+For each mail:
  - It performs SPF, DKIM, and DMARC validation.
  - It uses a Naive Bayes model (TF-IDF) to predict if the message is spam.
  - If the model is unsure, it prompts you for feedback to retrain and improve.
