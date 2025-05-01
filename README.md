@@ -55,7 +55,7 @@ pip install -r requirements.txt
 In order for the project to work, you must set up Gmail API credentials. Follow the [Gmail API Quickstart Guide](https://developers.google.com/workspace/gmail/api/quickstart/python) to generate your OAuth 2.0 credentials.
 
 **Important:** Make sure you follow the section titled:
-  -- “Authorize credentials for a desktop application”
+ - “Authorize credentials for a desktop application”
 
 Once completed, download the JSON file (usually named credentials.json).
 
